@@ -10,7 +10,7 @@ app.get("/api/whoami", function (req, res) {
   const ip = req.ip;
   const language = 'english';
   const software = req.headers['user-agent'];
-  res.send({ipaddress: ip, language: language, software: software});
+  res.json({ipaddress: ip, language: language, software: software});
 })
 
 var cors = require('cors');
