@@ -6,18 +6,13 @@ require('dotenv').config();
 var express = require('express');
 var app = express();
 
-app.get("/api/whoami", function (req, res) {
-  const ip = req.ip;
-  const language = 'english';
-  const software = req.headers['user-agent'];
-  res.json({ipaddress: ip, language: language, software: software});
-})
 
 var cors = require('cors');
 app.use(cors({optionSuccessStatus: 200})); 
 
 // http://expressjs.com/en/starter/static-files.html
 app.use(express.static('public'));
+app.set('trust proxy', true)
 
 // http://expressjs.com/en/starter/basic-routing.html
 app.get("/", function (req, res) {
@@ -28,6 +23,14 @@ app.get("/", function (req, res) {
 app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
+
+app.get("/api/whoami", function (req, res) {
+  const ipadress = req.ip;  
+  const language = req.acceptsLanguages();
+  const software = req.get(‘User-Agent’);
+  res.json({ipaddress: ip, language: language, software: software});
+})
+
 
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function () {
